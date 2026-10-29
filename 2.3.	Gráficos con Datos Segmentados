@@ -1,0 +1,32 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 1. Cargar el archivo completo
+df = pd.read_csv("dataset.txt")
+
+# 2. Agrupar por "Store ID" y sumar las unidades vendidas ("Units Sold")
+df_grouped = df.groupby("Store ID")["Units Sold"].sum().reset_index()
+
+# 3. Configurar el tamaño del gráfico
+plt.figure(figsize=(10, 5))
+
+# 4. Crear el gráfico de barras (Cambiamos plt.plot por plt.bar)
+plt.bar(
+    df_grouped["Store ID"].astype(str),
+    df_grouped["Units Sold"],
+    color="#0033cc",
+    alpha=0.85
+)
+
+# 5. Personalizar títulos y etiquetas
+plt.title("Total de Unidades Vendidas por Tienda (Gráfico de Barras)")
+plt.xlabel("ID de la Tienda (Store ID)")
+plt.ylabel("Total de Unidades Vendidas")
+
+# === CONFIGURAR ETIQUETAS VERTICALES ===
+plt.xticks(rotation=90)  # Rota los textos 90 grados para que queden verticales
+
+# Agregar cuadrícula de fondo y ajustar diseño (grid en el eje Y ayuda a leer mejor las alturas)
+plt.grid(axis='y', linestyle="--", alpha=0.7)
+plt.tight_layout()
+plt.show()
