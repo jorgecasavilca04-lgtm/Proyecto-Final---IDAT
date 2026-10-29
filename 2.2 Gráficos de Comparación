@@ -1,0 +1,26 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 1. Cargar el archivo completo
+df = pd.read_csv("dataset.txt")
+
+# 2. Filtrar únicamente los primeros 30 registros
+df_top30 = df.head(30)
+
+# 3. Configurar el tamaño de la figura (más compacta)
+plt.figure(figsize=(10, 5))
+
+# 4. Graficar los datos usando la versión recortada
+plt.plot(df_top30["ID"], df_top30["Total Price"], marker="o", label="Total Price", color="#8fbfef")
+plt.plot(df_top30["ID"], df_top30["Units Sold"], marker="s", label="Units Sold", color="#66ff99")
+
+# 5. Personalizar etiquetas y diseño
+plt.title("Evolución de Total Price y Units Sold (Primeros 30 registros)")
+plt.xlabel("ID del Registro")
+plt.ylabel("Valores")
+plt.legend()
+plt.grid(True, linestyle="--", alpha=0.7)
+
+# Ajustar diseño para que no se corte nada
+plt.tight_layout()
+plt.show()
