@@ -1,0 +1,31 @@
+import pandas as pd
+
+# 1. Carga de la base de datos
+archivo = "dataset.txt"
+df = pd.read_csv(archivo)
+
+print("--- 1. PRIMERAS FILAS DEL DATAFRAME ---")
+print(df.head(), "\n")
+
+# 2. Limpieza de datos
+# Verificar valores nulos
+print("--- 2. VALORES NULOS POR COLUMNA ---")
+print(df.isnull().sum(), "\n")
+
+# Eliminar filas duplicadas
+filas_antes = len(df)
+df = df.drop_duplicates()
+filas_despues = len(df)
+print(f"Se eliminaron {filas_antes - filas_despues} filas duplicadas.\n")
+
+# Verificar y corregir tipos de datos (por ejemplo, asegurando tipos numéricos)
+columnas_numericas = ['ID', 'Store ID', 'Total Price', 'Base Price', 'Units Sold']
+for col in columnas_numericas:
+    df[col] = pd.to_numeric(df[col], errors='coerce')
+
+# Eliminar posibles filas con valores nulos generados tras la conversión
+df = df.dropna()
+
+# 3. Descripción estadística
+print("--- 3. DESCRIPCIÓN ESTADÍSTICA ---")
+print(df.describe())
