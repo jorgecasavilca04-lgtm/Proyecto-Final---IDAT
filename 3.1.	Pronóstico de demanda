@@ -1,0 +1,33 @@
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+
+# 1. Cargar los datos
+df = pd.read_csv("dataset.txt")
+df.columns = df.columns.str.strip()
+df = df.fillna(df.median(numeric_only=True))
+
+# 2. Definir las variables
+X = df[["Base Price", "Total Price"]]
+y = df["Units Sold"]
+
+# 3. Inicializar y ajustar el modelo
+modelo = LinearRegression()
+modelo.fit(X, y)
+
+# 4. Calcular la mediana de los precios para la tienda 8023
+precios_tienda = df[df["Store ID"] == 8023][["Base Price", "Total Price"]].median()
+
+# Imprimir los números exactos que se van a usar
+print("Mediana de Base Price para la tienda 8023:", precios_tienda["Base Price"])
+print("Mediana de Total Price para la tienda 8023:", precios_tienda["Total Price"])
+
+# 5. Predecir el caso nuevo
+nuevo_caso = pd.DataFrame({
+    "Base Price": [precios_tienda["Base Price"]],
+    "Total Price": [precios_tienda["Total Price"]]
+})
+prediccion = modelo.predict(nuevo_caso)
+
+print("Unidades estimadas:", prediccion[0])
+print("Coeficientes:", modelo.coef_)
+print("R2 del modelo:", modelo.score(X, y))
